@@ -1,20 +1,27 @@
 const cron = require('node-cron');
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+const { saveBackupToPostgres } = require('./db_bot_help/pg_backup');
 
-const urlPing = `http://localhost:${process.env.PORT || 3000}`;
+const urlPing = process.env.URL_PING || `http://localhost:${process.env.PORT || 3000}`;
 
 // Función para hacer ping al servidor
 async function pingServer() {
   try {
     const response = await fetch(urlPing);
     console.log(`[CRON] Ping realizado: ${response.status === 200 ? '✅' : '❌'}`);
+    
+    // Hacer backup después de cada ping exitoso
+    if (response.status === 200) {
+      console.log('[CRON] Iniciando backup local y en PostgreSQL...');
+      await saveBackupToPostgres();
+    }
   } catch (error) {
     console.error('[CRON] Error al hacer ping:', error);
   }
 }
 
 function getRandomMinutes() {
-  return Math.floor(Math.random() * (13 - 4 + 1)) + 4; // Random entre 4 y 13
+  return 0.25
 }
 
 function startCron() {
@@ -31,7 +38,7 @@ function startCron() {
 
   // Iniciar el primer ping
   scheduleNextPing();
-  console.log('[CRON] Cron iniciado - Ping aleatorio cada 5-13 minutos');
+  console.log('[CRON] Cron iniciado - Ping aleatorio cada 1-2 minutos');
 }
 
 module.exports = startCron;
