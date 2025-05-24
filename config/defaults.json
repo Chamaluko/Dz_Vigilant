@@ -1,0 +1,83 @@
+{
+    "rolesBot": {
+        "dueño": {
+            "alias": "Jefe",
+            "description": "Rol dueño del servidor. Tiene acceso a todas las funciones del servidor",
+            "color": "#FFA500",
+            "hoist": true
+        },
+        "admin": {
+            "alias": "Administrador",
+            "description": "Rol administrador del servidor. Tiene acceso a la mayoria de las funciones del servidor",
+            "color": "#FF0000",
+            "hoist": true
+        },
+        "mod": {
+            "alias": "Moderador",
+            "description": "Rol para moderar el servidor y gestionar usuarios",
+            "color": "#00FF00",
+            "hoist": true
+        },
+        "elite": {
+            "alias": "Élite",
+            "description": "Rol para miembros destacados del servidor",
+            "color": "#FFD700",
+            "hoist": true
+        },
+        "verified": {
+            "alias": "Superviviente",
+            "description": "Rol base para miembros verificados",
+            "color": "#808080",
+            "hoist": true
+        }
+    },
+    "channelsBot":{
+        "verification": {
+            "alias": "Verificación",
+            "description": "Canal para verificar nuevos miembros",
+            "type": "text"
+          },
+          "logs": {
+            "alias": "Logs",
+            "description": "Canal para registrar acciones del bot y moderación",
+            "type": "text"
+          },
+          "rules": {
+            "alias": "Reglas",
+            "description": "Canal para mostrar las reglas generales del servidor",
+            "type": "text"
+          },
+          "announcements": {
+            "alias": "Anuncios",
+            "description": "Canal para anuncios importantes",
+            "type": "text"
+          },
+          "commands": {
+            "alias": "Comandos",
+            "description": "Canal para usar comandos del bot",
+            "type": "text"
+          },
+          "status": {
+            "alias": "Status",
+            "description": "Canal para mensajes de estado del bot",
+            "type": "text"
+          }
+    },
+    "staticMessages": {
+        "verify": {
+            "alias": "verify",
+            "title": "✅ Verificación",
+            "description": "Bienvenido al servidor. Para acceder a todos los canales, necesitas verificarte.\n\nHaz clic en el botón de abajo para verificar tu cuenta.",
+            "color": "0x00FF00",
+            "components": [
+                {
+                    "type": "button",
+                    "style": "Success",
+                    "label": "Verificar",
+                    "emoji": "✅",
+                    "customId": "verify_button"
+                }
+            ]
+        }
+    }
+} 
