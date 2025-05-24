@@ -3,6 +3,10 @@ const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch
 const { saveBackupToPostgres } = require('./db_bot_help/pg_backup');
 
 const urlPing = process.env.URL_PING || `http://localhost:${process.env.PORT || 3000}`;
+const min = 3;
+const max = 10;
+
+
 
 // Función para hacer ping al servidor
 async function pingServer() {
@@ -21,7 +25,7 @@ async function pingServer() {
 }
 
 function getRandomMinutes() {
-  return 0.25
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 function startCron() {
