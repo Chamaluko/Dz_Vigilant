@@ -33,3 +33,5 @@ Thumbs.db
 .cache/
 dist/
 coverage/ 
+
+README.md
