@@ -3,9 +3,15 @@ const { Client, GatewayIntentBits, Collection, Events } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 const { deployCommands } = require('./deploy-commands');
+const { createBackup } = require('./backup');
+const { restoreLatestBackup } = require('./restore');
 
 const keepAlive = require('./server');
 const startCron = require('./cron');
+
+// Restaurar la base de datos al iniciar
+console.log('[INIT] Intentando restaurar la base de datos...');
+restoreLatestBackup();
 
 // Crear una nueva instancia del cliente con todos los intents necesarios
 const client = new Client({
@@ -19,6 +25,11 @@ const client = new Client({
     GatewayIntentBits.GuildMessageReactions
   ]
 });
+
+// Hacer backup cada 30 minutos
+setInterval(() => {
+  createBackup();
+}, 30 * 60 * 1000);
 
 // Colecciones para comandos
 client.commands = new Collection();
