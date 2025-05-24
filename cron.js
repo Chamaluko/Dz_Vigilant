@@ -14,9 +14,7 @@ async function pingServer() {
 }
 
 function getRandomMinutes() {
-  // return Math.floor(Math.random() * (13 - 5 + 1)) + 5; // Random entre 5 y 13
-  return Math.floor(Math.random() * (2 - 1 + 1)) + 1; // Random entre 1 y 2
-
+  return Math.floor(Math.random() * (13 - 4 + 1)) + 4; // Random entre 4 y 13
 }
 
 function startCron() {
