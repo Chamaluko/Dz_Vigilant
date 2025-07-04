@@ -1,0 +1,32 @@
+{
+  "name": "dz-vigilant-bot",
+  "version": "1.0.0",
+  "description": "Bot de Discord con temática de DayZ para vigilancia y asistencia en el servidor",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "migrate": "node extras/tools/migrateToMongoDB.js"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "dayz",
+    "survival",
+    "zombie"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^14.19.3",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "mongodb": "^6.17.0",
+    "mongoose": "^8.16.1",
+    "node-cron": "^4.0.7",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

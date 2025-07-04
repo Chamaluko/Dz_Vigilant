@@ -1,0 +1,316 @@
+{
+    "rolesBot": {
+        "dueño": {
+            "alias": "dueño",
+            "name": "Jefe",
+            "description": "Rol dueño del servidor. Tiene acceso a todas las funciones del servidor",
+            "color": "#FFA500",
+            "hoist": true
+        },
+        "admin": {
+            "alias": "admin",
+            "name": "Administrador",
+            "description": "Rol administrador del servidor. Tiene acceso a la mayoria de las funciones del servidor",
+            "color": "#FF0000",
+            "hoist": true
+        },
+        "mod": {
+            "alias": "mod",
+            "name": "Moderador",
+            "description": "Rol para moderar el servidor y gestionar usuarios",
+            "color": "#00FF00",
+            "hoist": true
+        },
+        "elite": {
+            "alias": "elite",
+            "name": "Élite",
+            "description": "Rol para miembros destacados del servidor",
+            "color": "#FFD700",
+            "hoist": true
+        },
+        "verified": {
+            "alias": "verified",
+            "name": "Superviviente",
+            "description": "Rol base para miembros verificados",
+            "color": "#808080",
+            "hoist": true
+        }
+    },
+    "channelsBot":{
+        "verification": {
+            "alias": "verification",
+            "name": "Verificación",
+            "description": "Canal para verificar nuevos miembros",
+            "type": "text"
+          },
+          "logs": {
+            "alias": "logs",
+            "name": "Logs",
+            "description": "Canal para registrar acciones del bot y moderación",
+            "type": "text"
+          },
+          "announcements": {
+            "alias": "announcements",
+            "name": "Anuncios",
+            "description": "Canal para anuncios importantes",
+            "type": "text"
+          },
+          "commands": {
+            "alias": "commands",
+            "name": "Comandos",
+            "description": "Canal para usar comandos del bot",
+            "type": "text"
+          },
+          "status": {
+            "alias": "status",
+            "name": "Status",
+            "description": "Canal para mensajes de estado del bot",
+            "type": "text"
+          },
+          "tickets": {
+              "alias": "tickets",
+              "name": "Tickets",
+              "description": "Canal para crear tickets de soporte",
+              "type": "text"
+            },
+            "donaciones": {
+              "alias": "donaciones",
+              "name": "Donaciones",
+              "description": "Canal para donaciones y premios",
+              "type": "text"
+            },
+            "profiles": {
+              "alias": "profiles",
+              "name": "Perfiles",
+              "description": "Canal para gestionar perfiles de usuario",
+              "type": "text"
+            },
+            "users": {
+              "alias": "users",
+              "name": "Users-Admin",
+              "description": "Canal administrativo para monitorear usuarios (Solo Staff)",
+              "type": "text"
+            },
+            "errors": {
+              "alias": "errors",
+              "name": "Bot-Errors",
+              "description": "Canal para logs de errores del bot (Solo Staff)",
+              "type": "text"
+            }
+    },
+    "donationSettings": {
+        "paymentMethods": [
+            {
+                "value": "PayPal",
+                "label": "PayPal",
+                "description": "Pagos internacionales via PayPal",
+                "emoji": "🏦"
+            },
+            {
+                "value": "MercadoPago",
+                "label": "MercadoPago", 
+                "description": "Pagos via MercadoPago",
+                "emoji": "💳"
+            },
+            {
+                "value": "Transferencia Bancaria (CLP)",
+                "label": "Transferencia Bancaria (CLP)",
+                "description": "Transferencia bancaria en pesos chilenos",
+                "emoji": "🏛️"
+            }
+        ],
+        "autoDeleteHours": 24
+    },
+    "staticMessages": {
+        "verify": {
+            "alias": "verify",
+            "channel": "verification",
+            "title": "✅ Verificación",
+            "description": "Bienvenido al servidor. Para acceder a todos los canales, necesitas verificarte.\n\nHaz clic en el botón de abajo para verificar tu cuenta.",
+            "color": "0x00FF00",
+            "components": [
+                {
+                    "type": "button",
+                    "style": "Success",
+                    "label": "Verificar",
+                    "emoji": "✅",
+                    "customId": "verify_button"
+                }
+            ]
+        },
+        "tickets": {
+            "alias": "tickets",
+            "channel": "tickets",
+            "title": "🎫 Sistema de Tickets",
+            "description": "**¿Necesitas ayuda del equipo de administración?**\n\nUsa el botón crear ticket para que podamos asistirte de manera privada y personalizada.\n\n**¿Cuándo crear un ticket?**\n• Reportar problemas con otros usuarios\n• Solicitar ayuda con el servidor\n• Reportar bugs o errores\n• Sugerencias importantes\n• Problemas técnicos\nRecuerda que puedes encontrar **ayuda extra en otros canales.**\n\nLa atención es por orden de llegada, **espere su turno**.",
+            "color": "0x3498DB",
+            "components": [
+                {
+                    "type": "button",
+                    "style": "Primary",
+                    "label": "Crear Ticket",
+                    "emoji": "🎫",
+                    "customId": "create_ticket_button"
+                }
+            ]
+        },
+        "donaciones": {
+            "alias": "donaciones",
+            "channel": "donaciones",
+            "title": "🎁 Reclama tus Premios de Donación",
+            "description": "**¿Ya donaste al servidor?** ¡Reclama tus premios aquí!\n\n**IMPORTANTE:** Solo usa este sistema si ya realizaste una donación.\n\n**Paquetes Disponibles:**\n🥉 **Superviviente** - $5 USD\n🥈 **Veterano** - $15 USD  \n🥇 **Élite** - $30 USD\n💎 **Leyenda** - $50 USD\n\n*Cada donación se revisa manualmente para garantizar la seguridad.*",
+            "color": "0xFFD700",
+            "components": [
+                {
+                    "type": "button", 
+                    "style": "Success",
+                    "label": "Reclamar Premios",
+                    "emoji": "🎁",
+                    "customId": "create_donation_claim_button"
+                }
+            ]
+        },
+        "profiles": {
+            "alias": "profiles",
+            "channel": "profiles",
+            "title": "👤 Sistema de Perfiles",
+            "description": "**¡Bienvenido al sistema de perfiles!**\n\nAquí puedes ver y gestionar tu información personal del servidor.\n\n**Características disponibles:**\n• 💰 Ver tus DZ Coins\n• 📊 Estadísticas personales\n• 🎁 Historial de donaciones\n• ⚙️ Configurar tu perfil\n\n*Toda tu información se mantiene segura y privada.*",
+            "color": "0x9B59B6",
+            "components": [
+                {
+                    "type": "button",
+                    "style": "Primary",
+                    "label": "Mi Perfil",
+                    "emoji": "👤",
+                    "customId": "profile_view_button"
+                }
+            ]
+        },
+        "users_admin": {
+            "alias": "users_admin",
+            "channel": "users",
+            "title": "👥 Panel Administrativo de Usuarios",
+            "description": "**Canal administrativo - Solo Staff**\n\nAquí se muestran todos los perfiles de usuarios del servidor en tiempo real.\n\n**📊 Información mostrada:**\n• Datos básicos del usuario\n• Actividad y estadísticas\n• Historial de donaciones\n• Estado actual del perfil\n\n**🔄 Actualización automática:**\nLos mensajes se actualizan cada vez que un usuario revisa su perfil.\n\n*Este canal es solo visible para el staff del servidor*",
+            "color": "0xFF6B6B",
+            "category": "administrative",
+            "administrative": true
+        },
+        "jefatura_panel": {
+            "alias": "jefatura",
+            "channel": "jefatura",
+            "title": "🏛️ Panel de Administración Central - Jefatura DZ Vigilant",
+            "description": "**Centro de Control del Servidor**\n\nDesde aquí puedes administrar todas las funciones principales del servidor y acceder a información administrativa en tiempo real.\n\n**💰 Administración de Donaciones:**\n• Ver estadísticas generales y reportes\n• Revisar donaciones completadas recientemente\n• Gestionar solicitudes pendientes de verificación\n• Consultar historial específico de usuarios\n• Buscar donaciones por criterios específicos\n\n**📊 Información disponible:**\n✅ Estadísticas completas de donaciones\n✅ Base de datos de donaciones completadas\n✅ Monitor de solicitudes pendientes\n✅ Historial detallado por usuario\n✅ Herramientas de búsqueda avanzada\n\n*Panel exclusivo para administración del servidor*",
+            "color": "0x2F3136",
+            "category": "administrative",
+            "administrative": true,
+            "components": [
+                {
+                    "type": "button",
+                    "style": "Primary",
+                    "label": "Estadísticas Generales",
+                    "emoji": "📊",
+                    "customId": "admin_donations_stats_button"
+                },
+                {
+                    "type": "button",
+                    "style": "Success",
+                    "label": "Donaciones Recientes",
+                    "emoji": "💎",
+                    "customId": "admin_donations_recent_button"
+                },
+                {
+                    "type": "button",
+                    "style": "Danger",
+                    "label": "Solicitudes Pendientes",
+                    "emoji": "⏳",
+                    "customId": "admin_donations_pending_button"
+                },
+                {
+                    "type": "button",
+                    "style": "Secondary",
+                    "label": "Buscar Donaciones",
+                    "emoji": "🔍",
+                    "customId": "admin_donations_search_button"
+                }
+            ]
+        },
+        "admin_donaciones": {
+            "alias": "admin_donaciones",
+            "channel": "jefatura",
+            "title": "📊 Panel de Administración - Donaciones",
+            "description": "**Panel de control para administrar el sistema de donaciones**\n\nAcceso exclusivo para staff autorizado.\n\n**Funciones disponibles:**\n📊 Ver estadísticas completas\n💎 Revisar donaciones recientes\n⏳ Gestionar solicitudes pendientes\n🔍 Buscar donaciones específicas\n\n*Todos los datos se actualizan en tiempo real.*",
+            "color": "0xFF6B6B",
+            "category": "administrative",
+            "administrative": true,
+            "components": [
+                {
+                    "type": "button",
+                    "style": "Secondary",
+                    "label": "Estadísticas",
+                    "emoji": "📊",
+                    "customId": "admin_donations_stats_button"
+                },
+                {
+                    "type": "button",
+                    "style": "Primary", 
+                    "label": "Donaciones Recientes",
+                    "emoji": "💎",
+                    "customId": "admin_donations_recent_button"
+                },
+                {
+                    "type": "button",
+                    "style": "Danger",
+                    "label": "Solicitudes Pendientes", 
+                    "emoji": "⏳",
+                    "customId": "admin_donations_pending_button"
+                },
+                {
+                    "type": "button",
+                    "style": "Secondary",
+                    "label": "Buscar",
+                    "emoji": "🔍", 
+                    "customId": "admin_donations_search_button"
+                }
+            ]
+        },
+        "admin_tickets": {
+            "alias": "admin_tickets",
+            "channel": "jefatura",
+            "title": "🎫 Panel de Administración - Tickets",
+            "description": "**Sistema completo de gestión de tickets**\n\nControl total del sistema de soporte y tickets.\n\n**Funciones disponibles:**\n📊 Estadísticas completas del sistema\n🟢 Ver todos los tickets activos\n📋 Gestionar por estado/tipo/prioridad\n👥 Asignar tickets al staff\n🔍 Búsqueda avanzada\n\n*Seguimiento completo con historial y métricas.*",
+            "color": "0x3498DB",
+            "category": "administrative",
+            "administrative": true,
+            "components": [
+                {
+                    "type": "button",
+                    "style": "Secondary",
+                    "label": "Estadísticas",
+                    "emoji": "📊",
+                    "customId": "admin_tickets_stats_button"
+                },
+                {
+                    "type": "button",
+                    "style": "Success",
+                    "label": "Tickets Activos",
+                    "emoji": "🟢",
+                    "customId": "admin_tickets_active_button"
+                },
+                {
+                    "type": "button",
+                    "style": "Primary",
+                    "label": "Gestionar",
+                    "emoji": "⚙️",
+                    "customId": "admin_tickets_manage_button"
+                },
+                {
+                    "type": "button",
+                    "style": "Secondary",
+                    "label": "Buscar",
+                    "emoji": "🔍",
+                    "customId": "admin_tickets_search_button"
+                }
+            ]
+        }
+    }
+} 
