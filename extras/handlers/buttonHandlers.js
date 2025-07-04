@@ -1675,7 +1675,6 @@ const buttonHandlers = {
       // Restablecer configuración (conservando DZ Coins)
       userProfile.resetConfiguration();
       userProfile.dz_coins = currentCoins; // Restaurar DZ Coins
-      userProfile.addCoins(10, 'Bonificación por restablecer configuración'); // Bonificación pequeña
       await userProfile.save();
 
       // Crear embed de confirmación
@@ -1692,7 +1691,7 @@ const buttonHandlers = {
            },
           { 
             name: '💰 DZ Coins', 
-            value: `**${userProfile.dz_coins}** DZ Coins\n*(+10 de bonificación)*`, 
+            value: `**${userProfile.dz_coins}** DZ Coins`, 
             inline: true 
           }
         )
