@@ -24,7 +24,8 @@
     "mongodb": "^6.17.0",
     "mongoose": "^8.16.1",
     "node-cron": "^4.0.7",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^3.3.2",
+    "luxon": "^3.4.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"

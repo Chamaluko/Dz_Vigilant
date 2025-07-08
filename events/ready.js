@@ -2,6 +2,7 @@ const { Events } = require('discord.js');
 const { connectDB } = require('../extras/database/mongooseConnection');
 const models = require('../extras/database/models');
 const ErrorLogger = require('../extras/tools/errorLogger');
+const { getGiveawayManager } = require('../extras/tools/giveawayManager');
 
 module.exports = {
   name: Events.ClientReady,
@@ -37,6 +38,11 @@ module.exports = {
       // 🔧 INICIALIZAR SISTEMA DE ERROR LOGGING
       console.log('🔧 Inicializando sistema de error logging...');
       global.errorLogger = new ErrorLogger(client);
+      
+      // 🏆 INICIALIZAR GESTOR DE SORTEOS
+      console.log('🏆 Inicializando GiveawayManager...');
+      const giveawayManager = getGiveawayManager(client);
+      await giveawayManager.init();
       
       // Configurar canal hardcodeado automáticamente
       setTimeout(async () => {

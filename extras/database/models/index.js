@@ -8,6 +8,8 @@ const DonationRequest = require('./DonationRequest');
 const UserProfile = require('./UserProfile');
 const CompletedDonation = require('./CompletedDonation');
 const Ticket = require('./Ticket');
+const Giveaway = require('./Giveaway');
+const Prize = require('./Prize');
 
 module.exports = {
     RoleBot,
@@ -16,5 +18,7 @@ module.exports = {
     DonationRequest,
     UserProfile,
     CompletedDonation,
-    Ticket
+    Ticket,
+    Giveaway,
+    Prize
 }; 

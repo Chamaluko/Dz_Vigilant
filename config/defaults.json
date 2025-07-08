@@ -36,67 +36,79 @@
             "hoist": true
         }
     },
-    "channelsBot":{
+    "channelsBot": {
         "verification": {
             "alias": "verification",
             "name": "Verificación",
             "description": "Canal para verificar nuevos miembros",
             "type": "text"
-          },
-          "logs": {
+        },
+        "logs": {
             "alias": "logs",
             "name": "Logs",
             "description": "Canal para registrar acciones del bot y moderación",
             "type": "text"
-          },
-          "announcements": {
+        },
+        "announcements": {
             "alias": "announcements",
             "name": "Anuncios",
             "description": "Canal para anuncios importantes",
             "type": "text"
-          },
-          "commands": {
+        },
+        "commands": {
             "alias": "commands",
             "name": "Comandos",
             "description": "Canal para usar comandos del bot",
             "type": "text"
-          },
-          "status": {
+        },
+        "status": {
             "alias": "status",
             "name": "Status",
             "description": "Canal para mensajes de estado del bot",
             "type": "text"
-          },
-          "tickets": {
-              "alias": "tickets",
-              "name": "Tickets",
-              "description": "Canal para crear tickets de soporte",
-              "type": "text"
-            },
-            "donaciones": {
-              "alias": "donaciones",
-              "name": "Donaciones",
-              "description": "Canal para donaciones y premios",
-              "type": "text"
-            },
-            "profiles": {
-              "alias": "profiles",
-              "name": "Perfiles",
-              "description": "Canal para gestionar perfiles de usuario",
-              "type": "text"
-            },
-            "users": {
-              "alias": "users",
-              "name": "Users-Admin",
-              "description": "Canal administrativo para monitorear usuarios (Solo Staff)",
-              "type": "text"
-            },
-            "errors": {
-              "alias": "errors",
-              "name": "Bot-Errors",
-              "description": "Canal para logs de errores del bot (Solo Staff)",
-              "type": "text"
-            }
+        },
+        "tickets": {
+            "alias": "tickets",
+            "name": "Tickets",
+            "description": "Canal para crear tickets de soporte",
+            "type": "text"
+        },
+        "donaciones": {
+            "alias": "donaciones",
+            "name": "Donaciones",
+            "description": "Canal para donaciones y premios",
+            "type": "text"
+        },
+        "profiles": {
+            "alias": "profiles",
+            "name": "Perfiles",
+            "description": "Canal para gestionar perfiles de usuario",
+            "type": "text"
+        },
+        "users": {
+            "alias": "users",
+            "name": "Users-Admin",
+            "description": "Canal administrativo para monitorear usuarios (Solo Staff)",
+            "type": "text"
+        },
+        "errors": {
+            "alias": "errors",
+            "name": "Bot-Errors",
+            "description": "Canal para logs de errores del bot (Solo Staff)",
+            "type": "text"
+        },
+        "sorteos": {
+            "alias": "sorteos",
+            "name": "Sorteos",
+            "description": "Canal para sorteos y premios",
+            "type": "text"
+        },
+        "chatGeneral": {
+            "alias": "chatGeneral",
+            "name": "Chat General",
+            "description": "Canal para chat general del servidor",
+            "type": "text"
+        }
     },
     "donationSettings": {
         "paymentMethods": [
@@ -108,7 +120,7 @@
             },
             {
                 "value": "MercadoPago",
-                "label": "MercadoPago", 
+                "label": "MercadoPago",
                 "description": "Pagos via MercadoPago",
                 "emoji": "💳"
             },
@@ -162,7 +174,7 @@
             "color": "0xFFD700",
             "components": [
                 {
-                    "type": "button", 
+                    "type": "button",
                     "style": "Success",
                     "label": "Reclamar Premios",
                     "emoji": "🎁",
@@ -252,7 +264,7 @@
                 },
                 {
                     "type": "button",
-                    "style": "Primary", 
+                    "style": "Primary",
                     "label": "Donaciones Recientes",
                     "emoji": "💎",
                     "customId": "admin_donations_recent_button"
@@ -260,7 +272,7 @@
                 {
                     "type": "button",
                     "style": "Danger",
-                    "label": "Solicitudes Pendientes", 
+                    "label": "Solicitudes Pendientes",
                     "emoji": "⏳",
                     "customId": "admin_donations_pending_button"
                 },
@@ -268,7 +280,7 @@
                     "type": "button",
                     "style": "Secondary",
                     "label": "Buscar",
-                    "emoji": "🔍", 
+                    "emoji": "🔍",
                     "customId": "admin_donations_search_button"
                 }
             ]
@@ -311,6 +323,24 @@
                     "customId": "admin_tickets_search_button"
                 }
             ]
+        },
+        "admin_prizes": {
+            "alias": "admin_prizes",
+            "channel": "jefatura",
+            "title": "🏆 Panel de Administración - Premios",
+            "description": "**Gestiona los premios obtenidos por los usuarios**\n\nFunciones disponibles:\n⏳ Ver premios pendientes\n✅ Marcar premios como entregados",
+            "color": "0xF1C40F",
+            "category": "administrative",
+            "administrative": true,
+            "components": [
+                {
+                    "type": "button",
+                    "style": "Danger",
+                    "label": "Premios Pendientes",
+                    "emoji": "⏳",
+                    "customId": "admin_prizes_pending_button"
+                }
+            ]
         }
     }
-} 
+}

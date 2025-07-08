@@ -1,5 +1,5 @@
 const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle, StringSelectMenuBuilder, MessageFlags } = require('discord.js');
-const { RoleBot, DonationRequest, UserProfile, ChannelBot, CompletedDonation, Ticket } = require('../database/models');
+const { RoleBot, DonationRequest, UserProfile, ChannelBot, CompletedDonation, Ticket, Giveaway, Prize } = require('../database/models');
 const { donationSettings, rolesBot } = require('../../config/defaults.json');
 const validations = require('./validations');
 
@@ -1186,6 +1186,11 @@ const buttonHandlers = {
             .setStyle(ButtonStyle.Success)
             .setEmoji('💰'),
           new ButtonBuilder()
+            .setCustomId('profile_prizes_button')
+            .setLabel('Mis Premios')
+            .setStyle(ButtonStyle.Secondary)
+            .setEmoji('🏆'),
+          new ButtonBuilder()
             .setCustomId('profile_stats_button')
             .setLabel('Estadísticas')
             .setStyle(ButtonStyle.Secondary)
@@ -1269,6 +1274,11 @@ const buttonHandlers = {
               .setLabel('Mi Perfil')
               .setStyle(ButtonStyle.Primary)
               .setEmoji('👤'),
+            new ButtonBuilder()
+              .setCustomId('profile_prizes_button')
+              .setLabel('Mis Premios')
+              .setStyle(ButtonStyle.Secondary)
+              .setEmoji('🏆'),
             new ButtonBuilder()
               .setCustomId('profile_stats_button')
               .setLabel('Estadísticas')
@@ -1375,6 +1385,11 @@ const buttonHandlers = {
             .setLabel('Mi Perfil')
             .setStyle(ButtonStyle.Primary)
             .setEmoji('👤'),
+          new ButtonBuilder()
+            .setCustomId('profile_prizes_button')
+            .setLabel('Mis Premios')
+            .setStyle(ButtonStyle.Secondary)
+            .setEmoji('🏆'),
           new ButtonBuilder()
             .setCustomId('profile_stats_button')
             .setLabel('Estadísticas')
@@ -1488,7 +1503,12 @@ const buttonHandlers = {
             .setCustomId('profile_donations_button')
             .setLabel('Mis Donaciones')
             .setStyle(ButtonStyle.Success)
-            .setEmoji('💰')
+            .setEmoji('💰'),
+          new ButtonBuilder()
+            .setCustomId('profile_prizes_button')
+            .setLabel('Mis Premios')
+            .setStyle(ButtonStyle.Secondary)
+            .setEmoji('🏆')
         );
 
       // Usar reply para el primer mensaje desde el canal, update para navegación
@@ -2807,6 +2827,244 @@ const buttonHandlers = {
       });
     }
   },
+
+  /**
+   * Handler para botón de detalles de sorteo
+   */
+  giveaway_detail_dynamic: async (interaction) => {
+    try {
+      const giveawayId = interaction.customId.replace('giveaway_detail_', '');
+      const giveaway = await Giveaway.findOne({ id: giveawayId });
+      if (!giveaway) {
+        return await interaction.reply({ content: '❌ Sorteo no encontrado.', ephemeral: true });
+      }
+      const list = giveaway.participant_ids.slice(0, 25).map(id => `<@${id}>`).join(', ');
+
+      // Construir embed de detalles
+      const { EmbedBuilder } = require('discord.js');
+      const unix = Math.floor(giveaway.end_at.getTime() / 1000);
+      const embed = new EmbedBuilder()
+        .setTitle('📋 Detalles del Sorteo')
+        .setDescription(giveaway.description || 'Sin descripción')
+        .addFields(
+          { name: 'Premio', value: giveaway.prize, inline: true },
+          { name: 'Lista (primeros 25)', value: list || 'Sin participantes' },
+        )
+        .setColor(0x3498DB)
+        .setTimestamp();
+
+      // Lista de participantes (máx 25 para evitar exceder)
+      embed.addFields();
+
+      await interaction.reply({ embeds: [embed], ephemeral: true });
+    } catch (err) {
+      console.error('❌ [BUTTON] Error mostrando detalles de sorteo:', err);
+      await interaction.reply({ content: '❌ Error al mostrar detalles.', ephemeral: true });
+    }
+  },
+
+  /**
+   * Maneja el botón "Mis Premios"
+   */
+  profile_prizes_button: async (interaction) => {
+    try {
+      console.log(`🔘 [BUTTON] Procesando premios para ${interaction.user.username}`);
+
+      // Obtener todos los premios del usuario
+      const prizes = await Prize.find({ user_id: interaction.member.id }).sort({ date_won: -1 });
+
+      // Si no hay premios, mostrar mensaje informativo
+      if (prizes.length === 0) {
+        const embed = new EmbedBuilder()
+          .setTitle('🏆 Mis Premios')
+          .setDescription('¡Aún no has ganado premios! Participa en sorteos y eventos para conseguirlos.')
+          .setColor(0xF1C40F)
+          .setThumbnail(interaction.user.displayAvatarURL({ dynamic: true }))
+          .addFields(
+            { name: '🎉 Participa', value: 'Usa `/sorteo` para unirte a los próximos sorteos.', inline: false }
+          );
+
+        const navigationButtons = new ActionRowBuilder()
+          .addComponents(
+            new ButtonBuilder()
+              .setCustomId('profile_view_button')
+              .setLabel('Mi Perfil')
+              .setStyle(ButtonStyle.Primary)
+              .setEmoji('👤'),
+            new ButtonBuilder()
+              .setCustomId('profile_donations_button')
+              .setLabel('Mis Donaciones')
+              .setStyle(ButtonStyle.Success)
+              .setEmoji('💰'),
+            new ButtonBuilder()
+              .setCustomId('profile_stats_button')
+              .setLabel('Estadísticas')
+              .setStyle(ButtonStyle.Secondary)
+              .setEmoji('📊')
+          );
+
+        await interaction.update({ embeds: [embed], components: [navigationButtons] });
+        return;
+      }
+
+      // Estadísticas de premios
+      const totalPrizes = prizes.length;
+      const deliveredPrizes = prizes.filter(p => p.status === 'entregado').length;
+      const pendingPrizes = prizes.filter(p => p.status === 'pendiente').length;
+
+      const embed = new EmbedBuilder()
+        .setTitle('🏆 Mis Premios')
+        .setDescription(`**Has ganado ${totalPrizes} premio${totalPrizes === 1 ? '' : 's'}**`)
+        .setColor(0xF1C40F)
+        .setThumbnail(interaction.user.displayAvatarURL({ dynamic: true }))
+        .addFields(
+          { name: '📊 Resumen', value: `**Total:** ${totalPrizes}\n**✅ Entregados:** ${deliveredPrizes}\n**⏳ Pendientes:** ${pendingPrizes}`, inline: true }
+        );
+
+      // Listar los últimos 5 premios
+      const recentPrizes = prizes.slice(0, 5);
+      const statusEmoji = { 'pendiente': '⏳', 'entregado': '✅' };
+      let prizeList = '';
+
+      for (const prize of recentPrizes) {
+        const wonDate = new Date(prize.date_won);
+        prizeList += `${statusEmoji[prize.status] || '🎁'} **${prize.prize}**\n`;
+        prizeList += `   └ <t:${Math.floor(wonDate.getTime() / 1000)}:R>\n`;
+      }
+
+      if (prizeList) {
+        embed.addFields({ name: `📋 Últimos ${recentPrizes.length} Premios`, value: prizeList, inline: false });
+      }
+
+      embed.setFooter({ text: `${totalPrizes} premios totales` });
+
+      const navigationButtons = new ActionRowBuilder()
+        .addComponents(
+          new ButtonBuilder()
+            .setCustomId('profile_view_button')
+            .setLabel('Mi Perfil')
+            .setStyle(ButtonStyle.Primary)
+            .setEmoji('👤'),
+          new ButtonBuilder()
+            .setCustomId('profile_donations_button')
+            .setLabel('Mis Donaciones')
+            .setStyle(ButtonStyle.Success)
+            .setEmoji('💰'),
+          new ButtonBuilder()
+            .setCustomId('profile_stats_button')
+            .setLabel('Estadísticas')
+            .setStyle(ButtonStyle.Secondary)
+            .setEmoji('📊')
+        );
+
+      await interaction.update({ embeds: [embed], components: [navigationButtons] });
+
+      console.log(`✅ [BUTTON] Premios mostrados para ${interaction.user.username} - ${totalPrizes} premios`);
+
+    } catch (error) {
+      console.error('❌ [BUTTON] Error al mostrar premios:', error);
+      await interaction.reply({ content: '❌ Error al cargar tus premios. Inténtalo de nuevo.', ephemeral: true });
+    }
+  },
+
+  /**
+   * Maneja el botón "Premios Pendientes" (administración)
+   */
+  admin_prizes_pending_button: async (interaction) => {
+    try {
+      console.log(`🔘 [ADMIN] Revisando premios pendientes - solicitado por ${interaction.user.username}`);
+
+      // Verificar permisos de staff
+      const member = interaction.member;
+      const staffRoleDocs = await Promise.all(staffRoles.map(a => RoleBot.findByAlias(a)));
+      const staffRoleIds = staffRoleDocs.filter(Boolean).map(r => r.id);
+      const hasStaff = staffRoleIds.some(id => member.roles.cache.has(id));
+      if (!hasStaff) {
+        return await interaction.reply({ content: '❌ No tienes permisos para usar esta función.', ephemeral: true });
+      }
+
+      // Obtener premios pendientes
+      const pendingPrizes = await Prize.find({ status: 'pendiente' }).sort({ date_won: 1 }).limit(25);
+
+      if (pendingPrizes.length === 0) {
+        return await interaction.reply({ content: '✅ No hay premios pendientes de entrega.', ephemeral: true });
+      }
+
+      // Crear embed con lista
+      const embed = new EmbedBuilder()
+        .setTitle('⏳ Premios Pendientes')
+        .setDescription(`Se encontraron **${pendingPrizes.length}** premio(s) pendientes. Usa los botones para marcarlos como entregados.`)
+        .setColor(0xF1C40F)
+        .setTimestamp();
+
+      let description = '';
+      pendingPrizes.forEach((p, idx) => {
+        description += `${idx + 1}. <@${p.user_id}> • **${p.prize}** • <t:${Math.floor(new Date(p.date_won).getTime()/1000)}:d>\n`;
+      });
+      embed.addFields({ name: 'Lista', value: description.substring(0, 1024) });
+
+      // Crear filas de botones (máx 5 por fila, 5 filas)
+      const rows = [];
+      let row = new ActionRowBuilder();
+      pendingPrizes.forEach((p, idx) => {
+        if (idx % 5 === 0 && idx !== 0) {
+          rows.push(row);
+          row = new ActionRowBuilder();
+        }
+        row.addComponents(
+          new ButtonBuilder()
+            .setCustomId(`admin_prize_markdelivered_${p._id}`)
+            .setLabel(`${idx + 1}`)
+            .setStyle(ButtonStyle.Success)
+            .setEmoji('✅')
+        );
+      });
+      if (row.components.length > 0) rows.push(row);
+
+      await interaction.reply({ embeds: [embed], components: rows, ephemeral: true });
+
+    } catch (error) {
+      console.error('❌ [ADMIN] Error al mostrar premios pendientes:', error);
+      await interaction.reply({ content: '❌ Error al mostrar premios pendientes.', ephemeral: true });
+    }
+  },
+
+  /**
+   * Maneja botón dinámico para marcar premio como entregado
+   */
+  admin_prize_markdelivered_dynamic: async (interaction) => {
+    try {
+      const prizeId = interaction.customId.replace('admin_prize_markdelivered_', '');
+      const prize = await Prize.findById(prizeId);
+      if (!prize) {
+        return await interaction.reply({ content: '❌ Premio no encontrado.', ephemeral: true });
+      }
+      if (prize.status === 'entregado') {
+        return await interaction.reply({ content: '⚠️ Este premio ya fue marcado como entregado.', ephemeral: true });
+      }
+
+      // Verificar permisos de staff
+      const member = interaction.member;
+      const staffRoleDocs = await Promise.all(staffRoles.map(a => RoleBot.findByAlias(a)));
+      const staffRoleIds = staffRoleDocs.filter(Boolean).map(r => r.id);
+      const hasStaff = staffRoleIds.some(id => member.roles.cache.has(id));
+      if (!hasStaff) {
+        return await interaction.reply({ content: '❌ No tienes permisos para realizar esta acción.', ephemeral: true });
+      }
+
+      prize.status = 'entregado';
+      prize.delivered_at = new Date();
+      prize.delivered_by = interaction.user.id;
+      await prize.save();
+
+      await interaction.reply({ content: `🏆 Premio **${prize.prize}** marcado como entregado a <@${prize.user_id}>.`, ephemeral: true });
+      console.log(`✅ [ADMIN] Premio ${prizeId} entregado por ${interaction.user.username}`);
+
+    } catch (error) {
+      console.error('❌ [ADMIN] Error al marcar premio como entregado:', error);
+      await interaction.reply({ content: '❌ Error al actualizar el premio.', ephemeral: true });
+    }
+  },
 };
 
 // Importar la función desde nuclear.js para evitar duplicación
@@ -3133,6 +3391,14 @@ async function handleButtonInteraction(interaction) {
   else if (interaction.customId.startsWith('reopen_donation_channel_')) {
     handler = buttonHandlers['reopen_donation_channel'];
     handlerName = 'reopen_donation_channel';
+  } 
+  else if (interaction.customId.startsWith('giveaway_detail_')) {
+    handler = buttonHandlers['giveaway_detail_dynamic'];
+    handlerName = 'giveaway_detail_dynamic';
+  }
+  else if (interaction.customId.startsWith('admin_prize_markdelivered_')) {
+    handler = buttonHandlers['admin_prize_markdelivered_dynamic'];
+    handlerName = 'admin_prize_markdelivered_dynamic';
   } 
   else {
     handler = buttonHandlers[interaction.customId];
